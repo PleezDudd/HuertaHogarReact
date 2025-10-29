@@ -26,6 +26,24 @@ export const BoletaFinal = () => {
     }
     setBoleta(data);
 
+    // 🗂️ Asegurar persistencia en historial para vista admin (evitar duplicados)
+    try {
+      const raw = localStorage.getItem("boletasHistorial");
+      const historial = raw ? JSON.parse(raw) : [];
+      const esArray = Array.isArray(historial) ? historial : [];
+
+      const yaExiste = esArray.some((b) =>
+        b && b.fecha === data.fecha && b.total === data.total && b.usuario === data.usuario
+      );
+
+      if (!yaExiste) {
+        const nuevo = [...esArray, data];
+        localStorage.setItem("boletasHistorial", JSON.stringify(nuevo));
+      }
+    } catch {
+      localStorage.setItem("boletasHistorial", JSON.stringify([data]));
+    }
+
     // 👤 Cargar datos del usuario actual
     const sesion = localStorage.getItem("usuarioActual");
     let usuarioData = null;
@@ -41,6 +59,7 @@ export const BoletaFinal = () => {
 
   const { direccion, comuna, region, indicacion, productos, total, fecha } =
     boleta;
+  const totalDisplay = typeof total === "string" ? total : fmtCLP(total);
 
   return (
     <main className="container main-content" style={{ maxWidth: "850px" }}>
@@ -168,7 +187,7 @@ export const BoletaFinal = () => {
             paddingTop: ".8rem",
           }}
         >
-          Total pagado: {fmtCLP(total)}
+          Total pagado: {totalDisplay}
         </div>
 
         {/* Botones */}

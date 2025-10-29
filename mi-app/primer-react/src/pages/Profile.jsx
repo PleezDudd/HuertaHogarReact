@@ -69,6 +69,16 @@ export function Profile() {
         <button type="button" className="btn btn-outline" onClick={() => alert('Editar perfil no implementado')}>
           Editar perfil
         </button>
+        {user.rol && user.rol.toLowerCase() === 'admin' && (
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => navigate('/admin')}
+            style={{ marginLeft: 8 }}
+          >
+            Ir al panel de Administración
+          </button>
+        )}
         <button type="button" className="btn btn-danger" onClick={logout}>
           Cerrar sesión
         </button>

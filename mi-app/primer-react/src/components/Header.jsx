@@ -31,7 +31,7 @@ export default function Header() {
         </nav>
 
         <div>
-          <Link to="/registro" className="btn btn-outline">Ingresar</Link>
+          <Link to="/unete" className="btn btn-outline">Ingresar</Link>
           <Link to="/registro" className="btn btn-primary" style={{ marginLeft: 10 }}>
             Registrarse
           </Link>
