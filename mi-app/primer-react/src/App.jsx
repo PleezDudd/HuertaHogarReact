@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import './App.css';
 
 // Importar las páginas
@@ -22,6 +22,7 @@ import AdminBoletas from "./pages/AdminBoletas";
 import {AdminProductos} from "./pages/AdminProductos";
 import AdminEstadisticas from "./pages/AdminEstadisticas";
 import './css/styles.css';
+import Ofertas from "./pages/ofertas";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
         <Route path="/admin/boletas" element={<AdminBoletas />} />
         <Route path="/admin/estadisticas" element={<AdminEstadisticas />} />
         <Route path="/admin/usuarios" element={<AdminUsuarios />} />
+        <Route path="/ofertas" element={<Ofertas />} />
       </Routes>
       <Footer />
     </Router>

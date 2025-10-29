@@ -19,6 +19,14 @@ export default function Header() {
             <li><NavLink to="/unete" className={linkClass}>Únete</NavLink></li>
             <li><NavLink to="/perfil" className={linkClass}>Perfil</NavLink></li>
             <li><NavLink to="/carrito" className={linkClass}>Carrito</NavLink></li>
+            <li>
+              <NavLink
+                to="/ofertas"
+                className={({ isActive }) => (isActive ? 'active' : undefined)}
+              >
+                Ofertas
+              </NavLink>
+            </li>
           </ul>
         </nav>
 
