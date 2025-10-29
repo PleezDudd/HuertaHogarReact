@@ -1,0 +1,830 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+.logo-img {
+  height: 40px;
+  width: auto;
+  aspect-ratio: 4/1;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+img {
+  width: 240px;
+  border-radius: 15px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stock {
+  font-weight: bold;
+}
+
+/* ===== Reset ===== */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Base ===== */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #F7F7F7;
+  color: #333333;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Playfair Display', serif;
+  color: #8B4513;
+  margin: 0 0 0.5rem;
+}
+
+p {
+  line-height: 1.6;
+  margin: 0 0 1rem;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ===== Header ===== */
+.site-header {
+  font-family: 'playfair display', serif;
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  border-bottom: 1px solid #eeeeee;
+  padding: 0 20px;
+}
+
+.header-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 20px;
+  color: #2E8B57;
+}
+
+.nav {
+  list-style: none;
+  display: flex;
+  gap: 22px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #333333;
+  font-weight: 600;
+}
+
+.nav a:hover {
+  color: #2E8B57;
+}
+
+/* ===== Botones ===== */
+.btn {
+  display: inline-block;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #2E8B57;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.btn-secondary { 
+  background: #FFD700;
+  color: #000000;
+  
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid #2E8B57;
+  color: #2E8B57;
+}
+
+.btn-outline:hover {
+  background: #2E8B57;
+  color: #ffffff;
+}
+
+/* ===== Hero ===== */
+.hero {
+  padding: 72px 0 54px;
+  text-align: center;
+  background: #F9FCFA;
+}
+
+.hero h1 span {
+  color: #2E8B57;
+}
+
+.hero p {
+  color: #666666;
+}
+
+/* ===== Info ===== */
+.info {
+  padding: 48px 0;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 22px;
+  border: 1px solid #eeeeee;
+}
+
+/* ===== Catálogo ===== */
+.catalogo {
+  padding: 54px 0;
+  text-align: center;
+}
+
+.grid-categorias {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.categoria {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  font-weight: 700;
+  border: 2px solid rgba(46, 139, 87, 0.12);
+}
+
+.filtros {
+  margin: 20px 0 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.filtros input,
+.filtros select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #dddddd;
+  min-width: 220px;
+  outline: none;
+}
+
+/* ===== Productos ===== */
+.subtle-title {
+  margin-top: 26px;
+  color: #8B4513;
+  opacity: 0.9;
+}
+
+.grid-productos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.producto {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid #eeeeee;
+}
+
+.producto .precio {
+  color: #2E8B57;
+  font-weight: 700;
+  margin: 0;
+}
+
+.producto .desc {
+  color: #666666;
+  font-size: 0.95rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* ===== Carrito ===== */
+.carrito {
+  margin-top: 22px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  border: 1px solid #eeeeee;
+}
+
+.carrito h3 {
+  margin-bottom: 10px;
+}
+
+.mini-lista {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  color: #666666;
+}
+
+.totales {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ===== Fidelización ===== */
+.fidelizacion {
+  padding: 44px 0;
+  text-align: center;
+  background: #FFFBEA;
+}
+
+.fidel-wrap p {
+  color: #666666;
+}
+
+/* ===== Blog ===== */
+.blog {
+  padding: 50px 0;
+}
+
+.grid-blog {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.post {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid #eeeeee;
+}
+
+.link {
+  color: #2E8B57;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* ===== Mapa ===== */
+.mapa {
+  padding: 50px 0;
+  background: #ffffff;
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.mapa-wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.ciudades {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+.map-placeholder {
+  background: #F3F6F4;
+  border: 1px dashed #cfd8d3;
+  border-radius: 14px;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444444;
+  font-weight: 700;
+}
+
+/* ===== Impacto ===== */
+.impacto {
+  padding: 44px 0;
+}
+
+.impacto-wrap {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid #eeeeee;
+}
+
+.impacto-lista {
+  margin: 10px 0 0 18px;
+  color: #666666;
+}
+
+/* ===== Footer ===== */
+.site-footer {
+  background: #fafafa;
+  border-top: 1px solid #eeeeee;
+  margin-top: 36px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  padding: 22px 0;
+}
+
+.site-footer h3,
+.site-footer h4 {
+  color: #8B4513;
+}
+
+.site-footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer a {
+  color: #333333;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #2E8B57;
+}
+
+.copy {
+  text-align: center;
+  padding: 12px;
+  color: #666666;
+  font-size: 0.9rem;
+}
+
+/* ===== Responsive ===== */
+@media (min-width: 860px) {
+  .info-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid-categorias {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .grid-productos {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1.3fr 1fr 1fr;
+  }
+}
+
+@media (min-width: 920px) {
+  .mapa-wrap {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+}
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #F7F7F7;
+  padding: 20px 10px;
+}
+
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.sidebar .logo {
+  font-weight: bold;
+  font-size: 24px;
+  color: #2E8B57;
+}
+
+.nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  display: block;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.nav a:hover {
+  background-color: #2E8B57;
+  color: #fff;
+}
+
+/* Main content (para que el contenido no quede debajo del menú) */
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+}
+
+/* Hero */
+.hero {
+  padding: 72px 0 54px;
+  text-align: center;
+  background: #F9FCFA;
+}
+
+.hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  color: #2E8B57;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Botones */
+.btn {
+  display: inline-block;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #2E8B57;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid #2E8B57;
+  color: #2E8B57;
+}
+
+.btn-outline:hover {
+  background: #2E8B57;
+  color: #fff;
+}
+
+/* Tablas */
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla th,
+.tabla td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.tabla th {
+  background-color: #2E8B57;
+  color: white;
+}
+
+.tabla td {
+  background-color: #fff;
+}
+
+.tabla tr:hover {
+  background-color: #f5f5f5;
+}
+
+.agregar-producto-btn {
+  display: flex;
+  justify-content: center; /* Centra el contenido horizontalmente */
+  margin-top: 20px; /* Espacio superior para separar el botón de la tabla */
+}
+
+.agregar-producto-btn .btn {
+  padding: 12px 20px;
+  font-size: 1rem;
+}
+
+/* Ajustes para los cuadros de texto (input y textarea) */
+form input, form select, form textarea {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 1.1rem; /* Aumentamos el tamaño de la fuente */
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 20px; /* Separación entre los campos */
+  box-sizing: border-box;
+}
+
+form input:focus, form select:focus, form textarea:focus {
+  outline: 2px solid #2E8B57; /* Resaltar los cuadros de texto cuando se seleccionan */
+}
+
+/* Ajuste para el formulario, asegurando que los campos se alineen */
+.form-agregar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espaciado entre los campos */
+  max-width: 600px; /* Ancho máximo del formulario */
+  margin: 0 auto; /* Centra el formulario */
+}
+
+.agregar-usuario-btn {
+  display: flex;
+  justify-content: center; /* Centra el contenido horizontalmente */
+  margin-top: 20px; /* Espacio superior para separar el botón de la tabla */
+}
+
+.agregar-usuario-btn .btn {
+  padding: 12px 20px;
+  font-size: 1rem;
+}
+
+/* Estilos para el detalle de productos */
+.img-main {
+  width: 100%;
+  max-width: 550px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Miniaturas clickeables en detalle de producto */
+.img-thumb {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.img-thumb:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(46, 139, 87, 0.3);
+}
+
+.img-profile {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* Estilos para el perfil de usuario */
+.container.de.perfil {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.container.de.perfil h2 {
+    margin-bottom: 2rem;
+    color: #8B4513;
+    font-size: 2.5rem;
+}
+
+.profile-data {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+    text-align: left;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.profile-field {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-left: 4px solid #388e3c;
+}
+
+.profile-field label {
+    font-weight: bold;
+    color: #8B4513;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.profile-field span {
+    color: #333;
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.role-badge.administrador {
+    background: #ff6b6b;
+    color: white;
+}
+
+.role-badge.usuario {
+    background: #4ecdc4;
+    color: white;
+}
+
+.profile-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.profile-actions .btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.profile-actions .btn-outline {
+    background: transparent;
+    color: #388e3c;
+    border: 2px solid #388e3c;
+}
+
+.profile-actions .btn-outline:hover {
+    background: #388e3c;
+    color: white;
+}
+
+.profile-actions .btn-danger {
+    background: #dc3545;
+    color: white;
+    border: 2px solid #dc3545;
+}
+
+.profile-actions .btn-danger:hover {
+    background: #c82333;
+    border-color: #bd2130;
+}
+
+.no-session-message {
+    text-align: center;
+    padding: 2rem;
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 10px;
+    margin: 2rem 0;
+}
+
+.no-session-message h3 {
+    color: #856404;
+    margin-bottom: 1rem;
+}
+
+.no-session-message p {
+    color: #856404;
+    margin-bottom: 1.5rem;
+}
+
+.no-session-message .btn {
+    padding: 0.8rem 1.5rem;
+    background: #388e3c;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.no-session-message .btn:hover {
+    background: #2e7d32;
+}
+
+/* Responsive design para el perfil */
+@media (max-width: 768px) {
+    .container.de.perfil {
+        margin: 1rem;
+        padding: 1rem;
+    }
+    
+    .profile-data {
+        gap: 1rem;
+    }
+    
+    .profile-field {
+        padding: 0.8rem;
+    }
+    
+    .profile-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .profile-actions .btn {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+/* Centrar el formulario de registro solo en Unete.html */
+#registro-wrapper {
+    display: flex;
+    justify-content: center; /* centra horizontalmente */
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+#registroForm {
+    max-width: 400px; /* ancho máximo del formulario */
+    width: 100%;      /* rellena hasta el máximo permitido */
+}
+
+.carrito .totales {
+    display: flex;
+    justify-content: space-between; /* mantiene el "Total:" a la izquierda y el monto a la derecha */
+    align-items: center;            /* centra verticalmente el texto */
+    padding: 10px 850px;             /* espacio interno para que no quede pegado a los bordes */
+    background-color: #f9f9f9;      /* opcional: un fondo ligero para diferenciar */
+    border-radius: 8px;             /* bordes redondeados */
+    margin-top: 10px;               /* separación del resto de la lista */
+}
+
+.carrito .totales strong {
+    font-weight: 700;
+    color: #2E8B57;                 /* mismo color de precios */
+}
+
+.carrito a.btn.btn-secondary {
+    display: block;         /* hace que el botón sea un bloque para poder centrarlo */
+    width: fit-content;     /* que el ancho sea solo el del contenido */
+    margin: 15px auto 0;    /* centra horizontalmente y deja un margen superior */
+}
