@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Endpoints - HuertoHogar Backend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #2E8B57;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #2E8B57;
+            padding-bottom: 10px;
+        }
+        button {
+            background: #2E8B57;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1e6b3a;
+        }
+        .result {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success {
+            color: #2E8B57;
+            font-weight: bold;
+        }
+        .error {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 100px;
+            font-family: monospace;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test de Endpoints - Backend HuertoHogar</h1>
+    <p><strong>Base URL:</strong> <code>http://localhost:8080</code></p>
+
+    <!-- PRODUCTOS -->
+    <div class="container">
+        <h2>📦 Productos</h2>
+        
+        <button onclick="getProductos()">GET - Listar Productos</button>
+        <button onclick="getProductosActivos()">GET - Productos Activos</button>
+        <button onclick="getProductoById()">GET - Producto por ID</button>
+        
+        <div class="form-group">
+            <label>ID del Producto:</label>
+            <input type="number" id="productoId" value="1" placeholder="ID">
+        </div>
+        
+        <button onclick="createProducto()">POST - Crear Producto</button>
+        <button onclick="updateProducto()">PUT - Actualizar Producto</button>
+        <button onclick="deleteProducto()">DELETE - Eliminar Producto</button>
+        
+        <div class="form-group">
+            <label>JSON para Crear/Actualizar:</label>
+            <textarea id="productoJson">{
+  "nombre": "Tomates Orgánicos",
+  "descripcion": "Tomates frescos y jugosos",
+  "precio": 1500.00,
+  "categoria": "Verduras Orgánicas",
+  "imagen": "/img/Tomates.png",
+  "stock": 75,
+  "activo": true
+}</textarea>
+        </div>
+        
+        <div id="productosResult" class="result" style="display:none;"></div>
+    </div>
+
+    <!-- USUARIOS -->
+    <div class="container">
+        <h2>👥 Usuarios</h2>
+        
+        <button onclick="getUsuarios()">GET - Listar Usuarios</button>
+        <button onclick="getUsuarioById()">GET - Usuario por ID</button>
+        <button onclick="getUsuarioByEmail()">GET - Usuario por Email</button>
+        
+        <div class="form-group">
+            <label>ID del Usuario:</label>
+            <input type="number" id="usuarioId" value="1" placeholder="ID">
+        </div>
+        
+        <div class="form-group">
+            <label>Email del Usuario:</label>
+            <input type="email" id="usuarioEmail" value="admin@huertohogar.cl" placeholder="Email">
+        </div>
+        
+        <div id="usuariosResult" class="result" style="display:none;"></div>
+    </div>
+
+    <!-- CARRITO -->
+    <div class="container">
+        <h2>🛒 Carrito</h2>
+        
+        <button onclick="getCarrito()">GET - Obtener Carrito</button>
+        <button onclick="getItemsCarrito()">GET - Items del Carrito</button>
+        <button onclick="agregarAlCarrito()">POST - Agregar al Carrito</button>
+        
+        <div class="form-group">
+            <label>ID del Usuario:</label>
+            <input type="number" id="carritoUsuarioId" value="2" placeholder="Usuario ID">
+        </div>
+        
+        <div class="form-group">
+            <label>ID del Producto:</label>
+            <input type="number" id="carritoProductoId" value="1" placeholder="Producto ID">
+        </div>
+        
+        <div class="form-group">
+            <label>Cantidad:</label>
+            <input type="number" id="carritoCantidad" value="2" placeholder="Cantidad">
+        </div>
+        
+        <div id="carritoResult" class="result" style="display:none;"></div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:8080/api';
+        
+        function showResult(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = 'result ' + (isError ? 'error' : 'success');
+            element.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        }
+
+        // PRODUCTOS
+        async function getProductos() {
+            try {
+                const response = await fetch(`${BASE_URL}/productos`);
+                const data = await response.json();
+                showResult('productosResult', data);
+            } catch (error) {
+                showResult('productosResult', { error: error.message }, true);
+            }
+        }
+
+        async function getProductosActivos() {
+            try {
+                const response = await fetch(`${BASE_URL}/productos?activos=true`);
+                const data = await response.json();
+                showResult('productosResult', data);
+            } catch (error) {
+                showResult('productosResult', { error: error.message }, true);
+            }
+        }
+
+        async function getProductoById() {
+            const id = document.getElementById('productoId').value;
+            try {
+                const response = await fetch(`${BASE_URL}/productos/${id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    showResult('productosResult', data);
+                } else {
+                    showResult('productosResult', { error: 'Producto no encontrado' }, true);
+                }
+            } catch (error) {
+                showResult('productosResult', { error: error.message }, true);
+            }
+        }
+
+        async function createProducto() {
+            const json = document.getElementById('productoJson').value;
+            try {
+                const response = await fetch(`${BASE_URL}/productos`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: json
+                });
+                const data = await response.json();
+                showResult('productosResult', data);
+            } catch (error) {
+                showResult('productosResult', { error: error.message }, true);
+            }
+        }
+
+        async function updateProducto() {
+            const id = document.getElementById('productoId').value;
+            const json = document.getElementById('productoJson').value;
+            try {
+                const response = await fetch(`${BASE_URL}/productos/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: json
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    showResult('productosResult', data);
+                } else {
+                    showResult('productosResult', { error: 'Error al actualizar' }, true);
+                }
+            } catch (error) {
+                showResult('productosResult', { error: error.message }, true);
+            }
+        }
+
+        async function deleteProducto() {
+            const id = document.getElementById('productoId').value;
+            try {
+                const response = await fetch(`${BASE_URL}/productos/${id}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    showResult('productosResult', { message: 'Producto eliminado (soft delete)' });
+                } else {
+                    showResult('productosResult', { error: 'Error al eliminar' }, true);
+                }
+            } catch (error) {
+                showResult('productosResult', { error: error.message }, true);
+            }
+        }
+
+        // USUARIOS
+        async function getUsuarios() {
+            try {
+                const response = await fetch(`${BASE_URL}/usuarios`);
+                const data = await response.json();
+                showResult('usuariosResult', data);
+            } catch (error) {
+                showResult('usuariosResult', { error: error.message }, true);
+            }
+        }
+
+        async function getUsuarioById() {
+            const id = document.getElementById('usuarioId').value;
+            try {
+                const response = await fetch(`${BASE_URL}/usuarios/${id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    showResult('usuariosResult', data);
+                } else {
+                    showResult('usuariosResult', { error: 'Usuario no encontrado' }, true);
+                }
+            } catch (error) {
+                showResult('usuariosResult', { error: error.message }, true);
+            }
+        }
+
+        async function getUsuarioByEmail() {
+            const email = document.getElementById('usuarioEmail').value;
+            try {
+                const response = await fetch(`${BASE_URL}/usuarios/email/${email}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    showResult('usuariosResult', data);
+                } else {
+                    showResult('usuariosResult', { error: 'Usuario no encontrado' }, true);
+                }
+            } catch (error) {
+                showResult('usuariosResult', { error: error.message }, true);
+            }
+        }
+
+        // CARRITO
+        async function getCarrito() {
+            const usuarioId = document.getElementById('carritoUsuarioId').value;
+            try {
+                const response = await fetch(`${BASE_URL}/carrito/usuario/${usuarioId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    showResult('carritoResult', data);
+                } else {
+                    showResult('carritoResult', { error: 'Carrito no encontrado' }, true);
+                }
+            } catch (error) {
+                showResult('carritoResult', { error: error.message }, true);
+            }
+        }
+
+        async function getItemsCarrito() {
+            const usuarioId = document.getElementById('carritoUsuarioId').value;
+            try {
+                const response = await fetch(`${BASE_URL}/carrito/usuario/${usuarioId}/items`);
+                const data = await response.json();
+                showResult('carritoResult', data);
+            } catch (error) {
+                showResult('carritoResult', { error: error.message }, true);
+            }
+        }
+
+        async function agregarAlCarrito() {
+            const usuarioId = document.getElementById('carritoUsuarioId').value;
+            const productoId = document.getElementById('carritoProductoId').value;
+            const cantidad = document.getElementById('carritoCantidad').value;
+            
+            try {
+                const response = await fetch(`${BASE_URL}/carrito/usuario/${usuarioId}/agregar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        productoId: parseInt(productoId),
+                        cantidad: parseInt(cantidad)
+                    })
+                });
+                const data = await response.json();
+                showResult('carritoResult', data);
+            } catch (error) {
+                showResult('carritoResult', { error: error.message }, true);
+            }
+        }
+    </script>
+</body>
+</html>
+
