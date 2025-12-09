@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "../css/styles.css";
 
 const fmtCLP = (n) =>
@@ -12,7 +13,8 @@ const fmtCLP = (n) =>
 export const BoletaFinal = () => {
   const [boleta, setBoleta] = useState(null);
   const [usuario, setUsuario] = useState(null);
-  const navigate = useNavigate(); // ✅ ahora está correctamente definido
+  const navigate = useNavigate();
+  const { user: authUser } = useAuth(); // Usuario del contexto de autenticación
 
   useEffect(() => {
     document.title = "Boleta Final | HuertoHogar";
@@ -44,16 +46,32 @@ export const BoletaFinal = () => {
       localStorage.setItem("boletasHistorial", JSON.stringify([data]));
     }
 
-    // 👤 Cargar datos del usuario actual
-    const sesion = localStorage.getItem("usuarioActual");
+    // 👤 Cargar datos del usuario actual (prioridad: contexto > localStorage > boleta)
     let usuarioData = null;
-    try {
-      usuarioData = JSON.parse(sesion);
-    } catch {
-      usuarioData = { correo: sesion };
+    
+    // 1. Intentar usar el usuario del contexto de autenticación
+    if (authUser && authUser.email) {
+      usuarioData = authUser;
+    } else {
+      // 2. Intentar obtener de localStorage
+      const sesion = localStorage.getItem("usuarioActual");
+      try {
+        usuarioData = sesion ? JSON.parse(sesion) : null;
+      } catch {
+        usuarioData = null;
+      }
     }
+    
+    // 3. Si aún no hay usuario, usar el email de la boleta
+    if (!usuarioData || !usuarioData.email) {
+      usuarioData = {
+        email: data.usuario || "No se encontró el correo del usuario",
+        username: data.usuario || "Usuario"
+      };
+    }
+    
     setUsuario(usuarioData);
-  }, [navigate]);
+  }, [navigate, authUser]);
 
   if (!boleta) return null; // previene errores antes de que cargue
 
@@ -109,14 +127,14 @@ export const BoletaFinal = () => {
 
           {usuario && (
             <>
-              {usuario.nombre && (
+              {(usuario.nombre || usuario.username) && (
                 <p>
-                  <strong>Nombre:</strong> {usuario.nombre}
+                  <strong>Nombre:</strong> {usuario.nombre || usuario.username}
                 </p>
               )}
               <p>
                 <strong>Correo:</strong>{" "}
-                {usuario.correo || "No se encontró el correo del usuario"}
+                {usuario.email || usuario.correo || boleta.usuario || "No se encontró el correo del usuario"}
               </p>
             </>
           )}
