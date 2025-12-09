@@ -2,6 +2,10 @@ package com.huertohogar.backend.controller;
 
 import com.huertohogar.backend.model.Orden;
 import com.huertohogar.backend.service.OrdenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +30,11 @@ public class OrdenController {
     @Autowired
     private OrdenService ordenService;
 
-    /**
-     * Crea una nueva orden de compra
-     * POST /api/ordenes
-     */
+    @Operation(summary = "Crear orden de compra", description = "Crea una nueva orden de compra a partir del carrito del usuario. Actualiza el stock de productos y limpia el carrito automáticamente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Orden creada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Error: carrito vacío, stock insuficiente, datos de envío incompletos")
+    })
     @PostMapping
     public ResponseEntity<?> crearOrden(@RequestBody Map<String, Object> request) {
         try {
@@ -101,12 +106,12 @@ public class OrdenController {
         }
     }
 
-    /**
-     * Obtiene todas las órdenes de un usuario
-     * GET /api/ordenes/usuario/{usuarioId}
-     */
+    @Operation(summary = "Obtener órdenes de usuario", description = "Obtiene todas las órdenes de compra realizadas por un usuario específico, ordenadas por fecha de creación (más recientes primero)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de órdenes obtenida exitosamente")
+    })
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<?> obtenerOrdenesPorUsuario(@PathVariable Long usuarioId) {
+    public ResponseEntity<?> obtenerOrdenesPorUsuario(@Parameter(description = "ID del usuario") @PathVariable Long usuarioId) {
         try {
             List<Orden> ordenes = ordenService.obtenerOrdenesPorUsuario(usuarioId);
             return ResponseEntity.ok(ordenes);
@@ -119,12 +124,13 @@ public class OrdenController {
         }
     }
 
-    /**
-     * Obtiene una orden por su ID
-     * GET /api/ordenes/{ordenId}
-     */
+    @Operation(summary = "Obtener orden por ID", description = "Obtiene los detalles completos de una orden de compra específica, incluyendo todos sus items y productos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Orden encontrada"),
+            @ApiResponse(responseCode = "404", description = "Orden no encontrada")
+    })
     @GetMapping("/{ordenId}")
-    public ResponseEntity<?> obtenerOrdenPorId(@PathVariable Long ordenId) {
+    public ResponseEntity<?> obtenerOrdenPorId(@Parameter(description = "ID de la orden") @PathVariable Long ordenId) {
         try {
             Optional<Orden> orden = ordenService.obtenerOrdenPorId(ordenId);
             if (orden.isPresent()) {
@@ -144,10 +150,10 @@ public class OrdenController {
         }
     }
 
-    /**
-     * Obtiene todas las órdenes (para administradores)
-     * GET /api/ordenes
-     */
+    @Operation(summary = "Listar todas las órdenes", description = "Obtiene todas las órdenes de compra del sistema (endpoint para administradores), ordenadas por fecha de creación (más recientes primero)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de órdenes obtenida exitosamente")
+    })
     @GetMapping
     public ResponseEntity<?> obtenerTodasLasOrdenes() {
         try {
@@ -162,13 +168,15 @@ public class OrdenController {
         }
     }
 
-    /**
-     * Actualiza el estado de una orden
-     * PUT /api/ordenes/{ordenId}/estado
-     */
+    @Operation(summary = "Actualizar estado de orden", description = "Actualiza el estado de una orden de compra (Pendiente, En preparación, Enviado, Entregado, Cancelado)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Estado actualizado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Error: orden no encontrada o estado inválido"),
+            @ApiResponse(responseCode = "404", description = "Orden no encontrada")
+    })
     @PutMapping("/{ordenId}/estado")
     public ResponseEntity<?> actualizarEstado(
-            @PathVariable Long ordenId,
+            @Parameter(description = "ID de la orden") @PathVariable Long ordenId,
             @RequestBody Map<String, String> request) {
         try {
             String nuevoEstado = request.get("estado");

@@ -53,18 +53,30 @@ public class ProductoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Obtener productos por categoría", description = "Obtiene todos los productos que pertenecen a una categoría específica")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de productos obtenida exitosamente")
+    })
     @GetMapping("/categoria/{categoria}")
-    public ResponseEntity<List<Producto>> getByCategoria(@PathVariable String categoria) {
+    public ResponseEntity<List<Producto>> getByCategoria(@Parameter(description = "Categoría de los productos") @PathVariable String categoria) {
         List<Producto> productos = productoService.getByCategoria(categoria);
         return ResponseEntity.ok(productos);
     }
 
+    @Operation(summary = "Buscar productos por nombre", description = "Busca productos cuyo nombre contenga el texto especificado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de productos encontrados")
+    })
     @GetMapping("/buscar")
-    public ResponseEntity<List<Producto>> searchByNombre(@RequestParam String nombre) {
+    public ResponseEntity<List<Producto>> searchByNombre(@Parameter(description = "Texto a buscar en el nombre del producto") @RequestParam String nombre) {
         List<Producto> productos = productoService.searchByNombre(nombre);
         return ResponseEntity.ok(productos);
     }
 
+    @Operation(summary = "Obtener IDs y nombres de productos", description = "Obtiene un mapa con los IDs y nombres de todos los productos disponibles")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Mapa de productos obtenido exitosamente")
+    })
     @GetMapping("/ids")
     public ResponseEntity<Map<String, Object>> getProductosIds() {
         List<Producto> productos = productoService.getAll();
@@ -93,8 +105,14 @@ public class ProductoController {
         }
     }
 
+    @Operation(summary = "Actualizar producto", description = "Actualiza la información de un producto existente por su ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Producto actualizado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Producto no encontrado"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    })
     @PutMapping("/{id}")
-    public ResponseEntity<Producto> update(@PathVariable Long id, @RequestBody Producto producto) {
+    public ResponseEntity<Producto> update(@Parameter(description = "ID del producto a actualizar") @PathVariable Long id, @RequestBody Producto producto) {
         try {
             Producto productoActualizado = productoService.update(id, producto);
             return ResponseEntity.ok(productoActualizado);
@@ -105,8 +123,13 @@ public class ProductoController {
         }
     }
 
+    @Operation(summary = "Eliminar producto", description = "Elimina un producto del sistema (soft delete - marca como inactivo)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Producto eliminado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@Parameter(description = "ID del producto a eliminar") @PathVariable Long id) {
         try {
             productoService.delete(id);
             return ResponseEntity.noContent().build();

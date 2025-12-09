@@ -3,6 +3,10 @@ package com.huertohogar.backend.controller;
 import com.huertohogar.backend.model.Carrito;
 import com.huertohogar.backend.model.ItemCarrito;
 import com.huertohogar.backend.service.CarritoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,15 +32,25 @@ public class CarritoController {
     @Autowired
     private CarritoService carritoService;
 
+    @Operation(summary = "Obtener carrito de usuario", description = "Obtiene el carrito activo de un usuario específico por su ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Carrito encontrado"),
+            @ApiResponse(responseCode = "404", description = "Carrito no encontrado")
+    })
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<Carrito> getCarrito(@PathVariable Long usuarioId) {
+    public ResponseEntity<Carrito> getCarrito(@Parameter(description = "ID del usuario") @PathVariable Long usuarioId) {
         Optional<Carrito> carrito = carritoService.getCarritoByUsuario(usuarioId);
         return carrito.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Obtener items del carrito", description = "Obtiene todos los items (productos) que están en el carrito de un usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de items obtenida exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Error al obtener los items")
+    })
     @GetMapping("/usuario/{usuarioId}/items")
-    public ResponseEntity<List<ItemCarrito>> getItems(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<ItemCarrito>> getItems(@Parameter(description = "ID del usuario") @PathVariable Long usuarioId) {
         try {
             List<ItemCarrito> items = carritoService.getItemsCarrito(usuarioId);
             return ResponseEntity.ok(items);
@@ -45,12 +59,17 @@ public class CarritoController {
         }
     }
 
+    @Operation(summary = "Agregar producto al carrito", description = "Agrega un producto al carrito de un usuario con la cantidad especificada")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Producto agregado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Error: stock insuficiente, producto no encontrado o datos inválidos")
+    })
     @PostMapping(value = "/usuario/{usuarioId}/agregar", consumes = {"application/json", "application/x-www-form-urlencoded", "*/*"})
     public ResponseEntity<?> agregarProducto(
-            @PathVariable Long usuarioId,
+            @Parameter(description = "ID del usuario") @PathVariable Long usuarioId,
             @RequestBody(required = false) Map<String, Object> request,
-            @RequestParam(required = false) Long productoId,
-            @RequestParam(required = false) Integer cantidad) {
+            @Parameter(description = "ID del producto a agregar") @RequestParam(required = false) Long productoId,
+            @Parameter(description = "Cantidad del producto") @RequestParam(required = false) Integer cantidad) {
         try {
             logger.info("=== INICIO AGREGAR PRODUCTO ===");
             logger.info("UsuarioId: {}", usuarioId);
@@ -206,10 +225,15 @@ public class CarritoController {
         }
     }
 
+    @Operation(summary = "Actualizar cantidad de item", description = "Actualiza la cantidad de un producto específico en el carrito del usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cantidad actualizada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Error: stock insuficiente, item no encontrado o datos inválidos")
+    })
     @PutMapping("/usuario/{usuarioId}/item/{itemId}")
     public ResponseEntity<?> actualizarCantidad(
-            @PathVariable Long usuarioId,
-            @PathVariable Long itemId,
+            @Parameter(description = "ID del usuario") @PathVariable Long usuarioId,
+            @Parameter(description = "ID del item del carrito") @PathVariable Long itemId,
             @RequestBody Map<String, Integer> request) {
         try {
             Integer nuevaCantidad = request.get("cantidad");
@@ -226,10 +250,15 @@ public class CarritoController {
         }
     }
 
+    @Operation(summary = "Eliminar producto del carrito", description = "Elimina un producto específico del carrito del usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Producto eliminado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Error: item no encontrado o no pertenece al usuario")
+    })
     @DeleteMapping("/usuario/{usuarioId}/item/{itemId}")
     public ResponseEntity<?> eliminarProducto(
-            @PathVariable Long usuarioId,
-            @PathVariable Long itemId) {
+            @Parameter(description = "ID del usuario") @PathVariable Long usuarioId,
+            @Parameter(description = "ID del item del carrito a eliminar") @PathVariable Long itemId) {
         try {
             Carrito carrito = carritoService.eliminarProducto(usuarioId, itemId);
             return ResponseEntity.ok(carrito);
@@ -244,8 +273,13 @@ public class CarritoController {
         }
     }
 
+    @Operation(summary = "Limpiar carrito", description = "Elimina todos los productos del carrito del usuario, dejándolo vacío")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Carrito limpiado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Error al limpiar el carrito")
+    })
     @DeleteMapping("/usuario/{usuarioId}/limpiar")
-    public ResponseEntity<Void> limpiarCarrito(@PathVariable Long usuarioId) {
+    public ResponseEntity<Void> limpiarCarrito(@Parameter(description = "ID del usuario") @PathVariable Long usuarioId) {
         try {
             carritoService.limpiarCarrito(usuarioId);
             return ResponseEntity.noContent().build();
@@ -254,8 +288,13 @@ public class CarritoController {
         }
     }
 
+    @Operation(summary = "Obtener boleta de compra", description = "Genera una boleta de compra con el resumen completo del carrito del usuario, incluyendo productos, cantidades y totales")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Boleta generada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Error: carrito vacío o no encontrado")
+    })
     @GetMapping("/usuario/{usuarioId}/boleta")
-    public ResponseEntity<?> getBoletaCompra(@PathVariable Long usuarioId) {
+    public ResponseEntity<?> getBoletaCompra(@Parameter(description = "ID del usuario") @PathVariable Long usuarioId) {
         try {
             logger.info("Solicitando boleta para usuarioId: {}", usuarioId);
             Carrito carrito = carritoService.getBoletaCompra(usuarioId);

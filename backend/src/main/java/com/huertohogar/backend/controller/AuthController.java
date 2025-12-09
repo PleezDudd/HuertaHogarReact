@@ -3,6 +3,9 @@ package com.huertohogar.backend.controller;
 import com.huertohogar.backend.model.Usuario;
 import com.huertohogar.backend.service.JwtService;
 import com.huertohogar.backend.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +28,12 @@ public class AuthController {
     @Autowired
     private JwtService jwtService;
 
+    @Operation(summary = "Iniciar sesión", description = "Autentica un usuario con email y contraseña, y retorna un token JWT para acceder a los recursos protegidos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login exitoso, token JWT generado"),
+            @ApiResponse(responseCode = "401", description = "Credenciales incorrectas o usuario inactivo"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
